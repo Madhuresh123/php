@@ -1,19 +1,36 @@
 <?php
 
+    //adding comment 
     echo "We are connecting to the server <br>";
 
+    //initalizing required connecting variables
     $server = "localhost";
     $username = "root";
     $password = "";
 
+    //connecting php to db
     $conn = Mysqli_connect($server, $username, $password);
 
+    //if db is not connected
     if(!$conn){
-        echo "Sorry server connection failed";
+        die("Sorry server connection failed ". mysqli_connect_error());
     }
     else{
-        echo "Connected Successfully";
+        echo "Connected Successfully<br>";
     }
+
+    //creating db
+    $sql = "CREATE DATABASE firstDB2";
+    $result = mysqli_query($conn, $sql);
+
+    //if db is connected
+    if($result){
+        echo "Congrats, Database created successfully!";
+    }
+    else{
+        echo "Database is not created because of following error --->" . mysqli_error($conn);
+    }
+
 ?>
 
 <!DOCTYPE html>
