@@ -4,10 +4,6 @@
             $gameName = $_POST['gameName'];
             $category = $_POST['category'];
             $price = $_POST['price'];
-
-            echo "Your form saved successfully!<br>";
-            echo "Game name= $gameName, Category = $category, Price = $price";
-
         }
 
            //initalizing required connecting variables
@@ -31,24 +27,21 @@
         $price = $price;
 
             //creating table in DB
-    $insert = "INSERT INTO `games`(`Game name`, `category`, `price`) VALUES ( '$name' , '$category' , '$price' )";
+    $sql = "INSERT INTO `games`(`Game name`, `category`, `price`) VALUES ( '$name' , '$category' , '$price' )";
 
-    $result = mysqli_query($conn, $insert);
+    $result = mysqli_query($conn, $sql);
 
 
     if($result){
         echo "Congrats, data inserted successfully!";
+        echo "Game name= $gameName, Category = $category, Price = $price";
+
     }
     else{
         echo "data do not inserted because of following error --->" . mysqli_error($conn);
     }
 
     }   
-    
-   
-
-
-
 ?>
 
 <!DOCTYPE html>

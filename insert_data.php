@@ -24,9 +24,9 @@
     $price = "89";
 
     //creating table in DB
-    $insert = "INSERT INTO `games`(`Game name`, `category`, `price`) VALUES ( '$name' , '$category' , '$price' )";
+    $sql = "INSERT INTO `games`(`Game name`, `category`, `price`) VALUES ( '$name' , '$category' , '$price' )";
 
-    $result = mysqli_query($conn, $insert);
+    $result = mysqli_query($conn, $sql);
 
 
     if($result){
