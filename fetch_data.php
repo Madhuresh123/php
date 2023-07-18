@@ -21,13 +21,8 @@
 
     $result = mysqli_query($conn, $sql);
 
-    // // find numbers of records returned
+    // find numbers of records returned
     // $num_rows = mysqli_num_rows($result);
-
-    // // echo $num_rows;
-
-    //     $row = mysqli_fetch_assoc($result);
-    //     // echo var_dump($row);
 
         while($row = mysqli_fetch_assoc($result) ){
             // echo var_dump($row);
