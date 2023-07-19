@@ -34,5 +34,5 @@
     echo "<br>";
     echo $apple->get_color();
 
-
+    
 ?>
