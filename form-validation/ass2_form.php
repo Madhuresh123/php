@@ -1,26 +1,14 @@
+<?php include "conn_db.php" ?>
+
+
+
 <?php
-
-    //initalizing required connecting variables
-    $server = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "formdata";
-    //connecting php to db
-    $conn = Mysqli_connect($server, $username, $password, $database );
-
-    //if db is not connected
-    if(!$conn){
-        die("Sorry server connection failed ". mysqli_connect_error());
-    } 
-
-
     
 if($_SERVER['REQUEST_METHOD']  == 'POST') {
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-
 }     
 
 //post table in DB
