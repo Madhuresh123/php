@@ -4,6 +4,11 @@
 
     session_start();
 
+    if (!isset($_SESSION['id'])) {
+        header("location: login.php");
+    }
+    
+
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         //update the record
@@ -13,9 +18,10 @@
         $editEducation = $_POST["editEducation"];
         $editAddress = $_POST["editAddress"];
         $editPassword = $_POST["editPassword"];
+        $secretCode = md5($editPassword);
 
   
-        $sql = "UPDATE `profiledata` SET `Name` = '$editName', `Email` = '$editEmail', `Education` = '$editEducation', `Address` = '$editAddress', `Password` = '$editPassword' WHERE `profiledata`.`Sno.` = $editSno";
+        $sql = "UPDATE `profiledata` SET `Name` = '$editName', `Email` = '$editEmail', `Education` = '$editEducation', `Address` = '$editAddress', `Password` = '$secretCode' WHERE `profiledata`.`Sno.` = $editSno";
         $result =  mysqli_query($conn, $sql);
       
       } 
@@ -25,7 +31,6 @@
       $sql = "SELECT * FROM profiledata WHERE `Sno.` = '{$_SESSION['id']}'";
       $result = mysqli_query($conn, $sql);
       $row = mysqli_fetch_assoc($result);  
-
 
 ?>
 
@@ -107,6 +112,35 @@
     </div>
   </div>
 
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="registration.php">Registration</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.php">Login</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="profile.php">Profile</a>
+        </li>
+
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
   <!-- Profile card -->
         
         <div class="profile_card"> 
@@ -122,17 +156,35 @@
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Edit
                   </button>
-                  <button type="button" class="btn btn-danger">Logout</button>
+                  <button type="button" onclick="handleLogout()" class="btn btn-danger">Logout</button>
 
                 </div>
               </div>
 
         </div>
+
+
+        <script>
+function handleLogout() {
+    fetch('logout.php')
+      .then(response => {
+        // Check if the logout was successful
+        if (response.ok) {
+          // Redirect the user to the login page after successful logout
+          window.location.href = 'login.php';
+        } else {
+          // Handle any errors if needed
+          console.error('Logout failed.');
+        }
+      })
+      .catch(error => {
+        console.error('Error occurred during logout:', error);
+      });
+}
+</script>
         
-
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-
-        <script src="" async defer></script>
 
     </body>
 </html>

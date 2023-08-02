@@ -8,9 +8,10 @@ if($_SERVER['REQUEST_METHOD']  == 'POST') {
     $regEducation = $_POST['regEducation'];
     $regAddress = $_POST['regAddress'];
     $regPassword = $_POST['regPassword'];
+    $secretCode = md5($regPassword);
 
                 //post table in DB
-$sql = "INSERT INTO `profiledata`(`Name`, `Email`, `Education`, `Address`, `Password`) VALUES ('$regName','$regEmail','$regEducation','$regAddress','$regPassword');";
+$sql = "INSERT INTO `profiledata`(`Name`, `Email`, `Education`, `Address`, `Password`) VALUES ('$regName','$regEmail','$regEducation','$regAddress','$secretCode');";
 
 $result = mysqli_query($conn, $sql);
 
