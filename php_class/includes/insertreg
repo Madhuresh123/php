@@ -1,0 +1,34 @@
+<?php
+
+    class Insertreg{
+
+                //inserting data in table
+                if($_SERVER['REQUEST_METHOD']  == 'POST') {
+
+                    private $regName = $_POST['regName'];
+                    private $regEmail = $_POST['regEmail'];
+                    private $regEducation = $_POST['regEducation'];
+                    private $regAddress = $_POST['regAddress'];
+                    private $regPassword = $_POST['regPassword'];
+                    private $secretCode = md5($regPassword);
+
+                    // method to post table in DB
+                public function post(){
+
+                    $sql = "INSERT INTO `profiledata`(`Name`, `Email`, `Education`, `Address`, `Password`) VALUES ('$this->regName','$this->regEmail','$this->regEducation','$this->regAddress','$this->secretCode');";
+
+                    $result = mysqli_query($conn, $sql);
+
+                    if($result){
+                        header("Location: login.php");
+                    }
+
+                }
+              
+                }   
+
+    }
+
+
+
+?>
