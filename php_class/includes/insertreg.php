@@ -10,7 +10,6 @@ class Insertreg extends Conn {
     private $secretCode;
 
     public function __construct() {
-        
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->regName = $_POST['regName'];
             $this->regEmail = $_POST['regEmail'];
@@ -22,19 +21,21 @@ class Insertreg extends Conn {
     }
 
     // Method to post data to the table in the database
-    public function post() {
-        $sql = "INSERT INTO `profiledata`(`Name`, `Email`, `Education`, `Address`, `Password`) VALUES ('$this->regName','$this->regEmail','$this->regEducation','$this->regAddress','$this->secretCode');";
-
-        $result = mysqli_query($this->connectingDB(), $sql);
-
-        // if ($result) {
-        //     header("Location: login.php");
-        //     exit;
-        // } else {
-        //     die("Error: " . mysqli_error($this->conn));
-        // }
+    public function __destruct() {
+        try {
+            $sql = "INSERT INTO `profiledata`(`Name`, `Email`, `Education`, `Address`, `Password`) VALUES (:name, :email, :education, :address, :password)";
+            $stmt = $this->connectingDB()->prepare($sql);
+            $stmt->bindParam(':name', $this->regName);
+            $stmt->bindParam(':email', $this->regEmail);
+            $stmt->bindParam(':education', $this->regEducation);
+            $stmt->bindParam(':address', $this->regAddress);
+            $stmt->bindParam(':password', $this->secretCode);
+            $stmt->execute();
+            $stmt->closeCursor();
+        } catch (PDOException $e) {
+            die("Error: " . $e->getMessage());
+        }
     }
-
 }
 
 ?>

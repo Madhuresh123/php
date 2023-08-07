@@ -1,29 +1,32 @@
 <?php
-
-    class Conn{
-
-    //initalizing required connecting variables
+class Conn
+{
+    // Initializing required connecting variables
     private $server = "localhost";
     private $username = "root";
     private $password = "";
     private $database = "formdata";
-    private $conn; 
+    private $conn;
 
-        public function connectingDB(){  
+    public function connectingDB()
+    {
+        // Connecting PHP to DB using PDO
+        try {
+            $conn = new PDO("mysql:host=$this->server;dbname=$this->database;charset=utf8mb4", $this->username, $this->password);
 
-            //connecting php to db
-        $conn = Mysqli_connect($this->server, $this->username, $this->password, $this->database );
+            // Set error handling to throw exceptions on error
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        //if db is not connected
-        if(!$conn){
-            die("Sorry server connection failed ". mysqli_connect_error());
-        }else{
+            // If you want to enable emulated prepared statements for better performance
+            // (Only recommended if your database driver supports it and you fully trust your data)
+            // $conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
             $this->conn = $conn;
-            return $conn;
+        return $conn;
+        } catch (PDOException $e) {
+            // Handle any exceptions that occur during the connection process
+            die("Sorry server connection failed: " . $e->getMessage());
         }
-
-        }
-   
     }
+}
 ?>

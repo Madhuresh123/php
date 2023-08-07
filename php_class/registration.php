@@ -7,7 +7,7 @@ $connInstance = new Conn();
 $connection = $connInstance->connectingDB();
 
 $insertReg = new Insertreg();
-$insertReg->post();
+// $insertReg->post();
 
 
 ?>

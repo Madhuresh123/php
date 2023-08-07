@@ -1,54 +1,61 @@
 <?php
+include "./includes/conn.php";
+session_start();
 
-    include "./includes/conn.php";  
-    session_start();
+class Profile extends Conn
+{
+    private $editSno;
+    private $editName;
+    private $editEmail;
+    private $editEducation;
+    private $editAddress;
+    private $editPassword;
+    private $secretCode;
 
-    class Profile extends Conn{
-
-      private $editSno;
-      private $editName;
-      private $editEmail;
-      private $editEducation;
-      private $editAddress;
-      private $editPassword;
-      private $secretCode;
-
-      
-      public function __construct(){
-
+    public function __construct()
+    {
         if (!isset($_SESSION['id'])) {
-          header("location: login.php");
-      }
-      
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-  
-          //update the record
-          $this->editSno = $_SESSION['id'];
-          $this->editName = $_POST["editName"];
-          $this->editEmail = $_POST["editEmail"];
-          $this->editEducation = $_POST["editEducation"];
-          $this->editAddress = $_POST["editAddress"];
-          $this->editPassword = $_POST["editPassword"];
-          $this->secretCode = md5($this->editPassword);
-  
-    
-          $sql = "UPDATE `profiledata` SET `Name` = '$this->editName', `Email` = '$this->editEmail', `Education` = '$this->editEducation', `Address` = '$this->editAddress', `Password` = '$this->secretCode' WHERE `profiledata`.`Sno.` = $this->editSno";
-          $result =  mysqli_query($this->connectingDB(), $sql);
-        
+            header("location: login.php");
+            exit(); // It's a good practice to include an exit after redirecting.
         }
-        
-      }
-      
-      // getting data from database
 
-      public function getData(){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // update the record
+            $this->editSno = $_SESSION['id'];
+            $this->editName = $_POST["editName"];
+            $this->editEmail = $_POST["editEmail"];
+            $this->editEducation = $_POST["editEducation"];
+            $this->editAddress = $_POST["editAddress"];
+            $this->editPassword = $_POST["editPassword"];
+            $this->secretCode = md5($this->editPassword);
 
-        $sql = "SELECT * FROM profiledata WHERE `Sno.` = '{$_SESSION['id']}'";
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
-        
-      }
+            // It's recommended to use prepared statements to prevent SQL injection.
+            $sql = "UPDATE `profiledata` SET `Name` = ?, `Email` = ?, `Education` = ?, `Address` = ?, `Password` = ? WHERE `Sno.` = ?";
+            $stmt = $this->connectingDB()->prepare($sql);
+            $stmt->bind_param("sssssi", $this->editName, $this->editEmail, $this->editEducation, $this->editAddress, $this->secretCode, $this->editSno);
+            $stmt->execute();
+            $stmt->close();
+        }
     }
+
+    public function getprofile()
+    {
+        $sql = "SELECT * FROM profiledata WHERE `Sno.` = :sno";
+        $stmt = $this->connectingDB()->prepare($sql);
+        $stmt->bindParam(':sno', $_SESSION['id'], PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        $stmt->closeCursor();
+        
+        return $result; // Return the fetched data array
+    }
+}
+
+  $userprofile = new Profile();
+  $userprofile->getprofile();
+
+
 ?>
 
  
@@ -165,10 +172,21 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">Profile</h5>
-                  <p class="card-text"><?php echo $row['Name']; ?></p>
-                  <p class="card-text"><?php echo $row['Email']; ?></p>
-                  <p class="card-text"><?php echo $row['Education']; ?></p>
-                  <p class="card-text"><?php echo $row['Address']; ?></p>
+                  
+                  <?php
+// Fetch the data using the getprofile() method
+$userprofile = new Profile();
+$row = $userprofile->getprofile();
+
+if ($row) {
+    echo '<p class="card-text">' . $row['Name'] . '</p>';
+    echo '<p class="card-text">' . $row['Email'] . '</p>';
+    echo '<p class="card-text">' . $row['Education'] . '</p>';
+    echo '<p class="card-text">' . $row['Address'] . '</p>';
+} else {
+    echo 'Error fetching profile data.';
+}
+?>
 
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Edit

@@ -16,39 +16,39 @@ class Login extends Conn {
     }
 
     // Get user data from the table in the database
-    public function getUser() {
-        $sql = "SELECT * FROM profiledata WHERE Email= ? AND Password = ?";
-        $stmt = $this->conn->prepare($sql);
-
+    public function getLogin() {
+        $sql = "SELECT * FROM profiledata WHERE Email = :email AND Password = :password";
+        $stmt = $this->connectingDB()->prepare($sql);
+        
         if ($stmt) {
-            $stmt->bind_param("ss", $this->logEmail, $this->secretCode);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result) {
-                $num = $result->num_rows;
-
+            $stmt->bindParam(':email', $this->logEmail);
+            $stmt->bindParam(':password', $this->secretCode);
+            
+            if ($stmt->execute()) {
+                $num = $stmt->rowCount();
+                
                 if ($num == 1) {
                     session_start();
-                    $row = $result->fetch_assoc();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     $_SESSION['id'] = $row['Sno.'];
-
                     header("location: profile.php");
                 } else {
                     echo "Error: Invalid email or password";
                 }
             } else {
-                echo "SQL Error: " . $this->conn->error;
+                echo "SQL Error: " . $stmt->errorInfo()[2];
             }
-            $stmt->close();
+            
+            $stmt->closeCursor();
         } else {
             echo "SQL Error: " . $this->conn->error;
         }
     }
 }
 
+$login = new Login();
+$login->getLogin();
 ?>
-
 
 <!DOCTYPE html>
 
