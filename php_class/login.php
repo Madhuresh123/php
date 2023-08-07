@@ -1,55 +1,54 @@
 <?php
+include "./includes/conn.php";
 
-    include "conn.php";  
+// Inserting data in table
+class Login extends Conn {
+    private $logEmail;
+    private $logPassword;
+    private $secretCode;
 
-    
-
-        //inserting data in table
-
-        class login extends conn{
-
-            if($_SERVER['REQUEST_METHOD']  == 'POST'  && !empty($_POST)) {
-
-                private $logEmail = $_POST['logEmail'];
-                private $logPassword = $_POST['logPassword'];
-                private $secretCode = md5($logPassword);
-
-                            //post table in DB
-
-            public function getUser(){
-
-                $sql = "SELECT * FROM profiledata WHERE Email= '$this->logEmail' AND Password = '$this->secretCode'";
-
-                $result = mysqli_query($this->conn, $sql);
-    
-                $row = mysqli_fetch_assoc($result);    
-    
-                if ($result) {
-                    $num = mysqli_num_rows($result);
-    
-                    if ($num == 1) {
-                        session_start();
-                        $_SESSION['id'] = $row['Sno.'];
-    
-                        header("location: profile.php");
-    
-                    } else {
-                        echo "error";
-                    }
-                } else {
-                    echo "SQL Error: " . mysqli_error($this->conn);
-                }
-
-            }                            
-           
-
-            }
-
+    public function __construct() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST)) {
+            $this->logEmail = $_POST['logEmail'];
+            $this->logPassword = $_POST['logPassword'];
+            $this->secretCode = md5($this->logPassword);
         }
-                
+    }
 
+    // Get user data from the table in the database
+    public function getUser() {
+        $sql = "SELECT * FROM profiledata WHERE Email= ? AND Password = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("ss", $this->logEmail, $this->secretCode);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result) {
+                $num = $result->num_rows;
+
+                if ($num == 1) {
+                    session_start();
+                    $row = $result->fetch_assoc();
+                    $_SESSION['id'] = $row['Sno.'];
+
+                    header("location: profile.php");
+                } else {
+                    echo "Error: Invalid email or password";
+                }
+            } else {
+                echo "SQL Error: " . $this->conn->error;
+            }
+            $stmt->close();
+        } else {
+            echo "SQL Error: " . $this->conn->error;
+        }
+    }
+}
 
 ?>
+
 
 <!DOCTYPE html>
 

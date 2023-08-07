@@ -1,41 +1,57 @@
 <?php
 
-    include "conn.php";  
-
+    include "./includes/conn.php";  
     session_start();
 
-    if (!isset($_SESSION['id'])) {
-        header("location: login.php");
-    }
-    
+    class Profile extends Conn{
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+      private $editSno;
+      private $editName;
+      private $editEmail;
+      private $editEducation;
+      private $editAddress;
+      private $editPassword;
+      private $secretCode;
 
-        //update the record
-        $editSno = $_SESSION['id'];
-        $editName = $_POST["editName"];
-        $editEmail = $_POST["editEmail"];
-        $editEducation = $_POST["editEducation"];
-        $editAddress = $_POST["editAddress"];
-        $editPassword = $_POST["editPassword"];
-        $secretCode = md5($editPassword);
-
-  
-        $sql = "UPDATE `profiledata` SET `Name` = '$editName', `Email` = '$editEmail', `Education` = '$editEducation', `Address` = '$editAddress', `Password` = '$secretCode' WHERE `profiledata`.`Sno.` = $editSno";
-        $result =  mysqli_query($conn, $sql);
       
-      } 
+      public function __construct(){
 
-
+        if (!isset($_SESSION['id'])) {
+          header("location: login.php");
+      }
+      
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+  
+          //update the record
+          $this->editSno = $_SESSION['id'];
+          $this->editName = $_POST["editName"];
+          $this->editEmail = $_POST["editEmail"];
+          $this->editEducation = $_POST["editEducation"];
+          $this->editAddress = $_POST["editAddress"];
+          $this->editPassword = $_POST["editPassword"];
+          $this->secretCode = md5($this->editPassword);
+  
+    
+          $sql = "UPDATE `profiledata` SET `Name` = '$this->editName', `Email` = '$this->editEmail', `Education` = '$this->editEducation', `Address` = '$this->editAddress', `Password` = '$this->secretCode' WHERE `profiledata`.`Sno.` = $this->editSno";
+          $result =  mysqli_query($this->connectingDB(), $sql);
+        
+        }
+        
+      }
+      
       // getting data from database
-      $sql = "SELECT * FROM profiledata WHERE `Sno.` = '{$_SESSION['id']}'";
-      $result = mysqli_query($conn, $sql);
-      $row = mysqli_fetch_assoc($result);  
 
+      public function getData(){
+
+        $sql = "SELECT * FROM profiledata WHERE `Sno.` = '{$_SESSION['id']}'";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        
+      }
+    }
 ?>
 
-
-
+ 
 <!DOCTYPE html>
 
 <html>

@@ -1,8 +1,14 @@
 <?php 
-//connectiong to database
-include "./include/conn.php";  
 
-include "./include/insertreg.php";
+include "./includes/conn.php";
+include "./includes/insertreg.php";
+
+$connInstance = new Conn();
+$connection = $connInstance->connectingDB();
+
+$insertReg = new Insertreg();
+$insertReg->post();
+
 
 ?>
 
