@@ -1,19 +1,42 @@
 <?php
 
-interface class Skills{
+interface Skills{
 
-    
+    //cannot initiat properties;
+
+    //do not need to specify access modifier
+    function coding();
+
+    //all are abstract methods by default
+    function chess();
+}
+
+interface Talents{
+
+    function jumping();
+
+    function speaking();
 
 }
 
-interface class Talents{
+interface Achievements{
+
+    function developer();
+}
+
+class Person implements Skills{
+
+
+    //we need to define all interface
+
+    public function coding(){
+        echo "Ram is good in coding";
+    }
+
+
+    function chess(){}
 
 }
 
-interface class Achievements{
-
-}
-
-class Person implements Skills, Talents, Achievements{
-
-}
+$ram = new Person();
+$ram->coding(); 
