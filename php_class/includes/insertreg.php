@@ -10,6 +10,7 @@ class Insertreg extends Conn {
     private $secretCode;
 
     public function __construct() {
+        
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->regName = $_POST['regName'];
             $this->regEmail = $_POST['regEmail'];
@@ -22,6 +23,7 @@ class Insertreg extends Conn {
 
     // Method to post data to the table in the database
     public function __destruct() {
+
         try {
             $sql = "INSERT INTO `profiledata`(`Name`, `Email`, `Education`, `Address`, `Password`) VALUES (:name, :email, :education, :address, :password)";
             $stmt = $this->connectingDB()->prepare($sql);

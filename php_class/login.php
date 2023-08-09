@@ -3,6 +3,7 @@ include "./includes/conn.php";
 
 // Inserting data in table
 class Login extends Conn {
+
     private $logEmail;
     private $logPassword;
     private $secretCode;
