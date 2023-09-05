@@ -10,7 +10,7 @@
         //normal methods
         public function __set_deatils($name, $age, $salary){
 
-            $this->name = $name;
+            $this-> name = $name;
             $this->age = $age;
             $this->salary = $salary;
         }

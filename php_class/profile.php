@@ -42,7 +42,7 @@ class Profile extends Conn
     {
         $sql = "SELECT * FROM profiledata WHERE `Sno.` = :sno";
         $stmt = $this->connectingDB()->prepare($sql);
-        $stmt->bindParam(':sno', $_SESSION['id'], PDO::PARAM_INT);
+        $stmt-> (':sno', $_SESSION['id'], PDO::PARAM_INT);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
     

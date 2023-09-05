@@ -1,5 +1,7 @@
 <?php
 
+//single inheritance
+
 class Mammal{
 
     public function mammalwalk(){
