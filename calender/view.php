@@ -1,10 +1,10 @@
 <?php
 
-// Get the current month and year
+// current month and year
 $currentMonth = date("n");
 $currentYear = date("Y");
 
-// Set the month and year to display 
+//display month and year
 $displayMonth = isset($_GET['month']) ? $_GET['month'] : $currentMonth;
 $displayYear = isset($_GET['year']) ? $_GET['year'] : $currentYear;
 
