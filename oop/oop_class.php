@@ -1,7 +1,5 @@
 
 <?php
-
-
     class Fruit{
 
         public $name;
@@ -22,7 +20,6 @@
         function get_color(){
             return $this->color;
         }
-
     }
 
     $apple = New Fruit();
@@ -33,6 +30,4 @@
     echo $apple->get_name();
     echo "<br>";
     echo $apple->get_color();
-
-    
 ?>

@@ -1,9 +1,7 @@
 
 <?php
-// Start a session if not already started
 session_start();
 
-// Product list (you can expand this list)
 $products = [
     ['id' => 1, 'name' => 'Nike Air Jordan 1', 'price' => 10, 'image' => 'https://cdn.webshopapp.com/shops/296678/files/392909457/image.jpg'],
     ['id' => 2, 'name' => 'Nike Air Jordan 2', 'price' => 15, 'image' => 'https://static.nike.com/a/images/f_auto/dpr_1.3,cs_srgb/w_945,c_limit/95e3c30f-aa7f-41a4-9959-8023fc707299/air-jordan-1-2022-lost-and-found-chicago-the-inspiration-behind-the-design.jpg'],
@@ -29,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_to_cart'])) {
             'image' => $products[$product_id - 1]['image'],
 
         ];
-    }
+    } 
 }
 
 if (isset($_POST['clear_cart'])) {
@@ -90,14 +88,14 @@ if (isset($_POST['clear_cart'])) {
   
                 <form method="POST">
                     <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                    <input type="submit" name="add_to_cart" value="Add to Cart">
+                    <button type="submit" name="add_to_cart" class="btn btn-danger">Add to Cart</button>
                     <button type="submit" name="clear_cart" class="btn btn-danger">Clear Cart</button>
                 </form>
             </div>
         <?php endforeach; ?>
   
         </div>
-    <p><a href="cart.php">View Cart</a></p>
+    <!-- <p><a href="cart.php">View Cart</a></p> -->
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>

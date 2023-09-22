@@ -25,10 +25,7 @@
                 echo "I m a fruit <br>";
             }
         }
-
-
+        
     $mango = new Mango("mango", "Green");
     $mango->message();
-
-
 ?>
